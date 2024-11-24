@@ -1,5 +1,19 @@
 # creche-api
 
+## Table of Contents
+- [Introduction](#introduction)
+- [Dependencies](#dependencies)
+- [Architecture](#architecture)
+- [API Endpoints](#api-endpoints)
+  - [Parents](#parents)
+  - [Children](#children)
+  - [Caregivers](#caregivers)
+  - [Enrollments](#enrollments)
+  - [Creches](#creches)
+- [Running the Application](#running-the-application)
+- [Accessing the API Documentation](#accessing-the-api-documentation)
+- [TODO](#todo)
+
 ## Introduction
 
 This project is a REST API for managing operations related to creches, children, caregivers, and enrollments. The API allows for creating, reading, updating, and deleting records in a database.
