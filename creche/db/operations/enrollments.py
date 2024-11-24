@@ -43,3 +43,8 @@ def read_enrollments_by_creche_and_price(creche_id: int, price: int):
     session = DBSession()
     enrollments = session.query(DBEnrollment).filter(DBEnrollment.creche_id == creche_id, DBEnrollment.price == price).all()
     return enrollments
+
+def read_enrollments_by_parent(parent_id: int):
+    session = DBSession()
+    enrollments = session.query(DBEnrollment).filter(DBEnrollment.parent_id == parent_id).all()
+    return enrollments

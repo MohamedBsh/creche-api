@@ -33,25 +33,60 @@ The API is organized into several layers:
 - **API Router Layer**  
   This layer allows us to choose which type of operations to perform based on the HTTP request. It manages the routes and endpoints of the API.
 
-## Endpoints
+## API Endpoints
 
-### Crèches
+### Parents
 
-- **Create a Crèche**
+- **Get All Parents**
   ```bash
-  curl -X POST "http://localhost:8000/creches" -H "Content-Type: application/json" -d '{"name": "Crèche A", "address": "123 Rue Exemple", "capacity": 30}'
+  curl -X GET "http://localhost:8000/parents"
   ```
 
-- **Get a Crèche by ID**
+- **Create a Parent**
   ```bash
-  curl -X GET "http://localhost:8000/creches/1"
+  curl -X POST "http://localhost:8000/parents" -H "Content-Type: application/json" -d '{"first_name": "Jane", "last_name": "Doe", "email_address": "jane.doe@example.com", "phone_number": "+123456789"}'
+  ```
+
+- **Get a Parent by ID**
+  ```bash
+  curl -X GET "http://localhost:8000/parents/1"
+  ```
+
+- **Update a Parent**
+  ```bash
+  curl -X PUT "http://localhost:8000/parents/1" -H "Content-Type: application/json" -d '{"first_name": "Jane", "last_name": "Smith", "email_address": "jane.smith@example.com", "phone_number": "+987654321"}'
+  ```
+
+- **Delete a Parent by ID**
+  ```bash
+  curl -X DELETE "http://localhost:8000/parents/1"
+  ```
+
+- **Get Children of a Parent**
+  ```bash
+  curl -X GET "http://localhost:8000/parents/1/children"
+  ```
+
+- **Add a Child to a Parent**
+  ```bash
+  curl -X POST "http://localhost:8000/parents/1/children" -H "Content-Type: application/json" -d '{"child_id": 1}'
+  ```
+
+- **Remove a Child from a Parent**
+  ```bash
+  curl -X DELETE "http://localhost:8000/parents/1/children/1"
   ```
 
 ### Children
 
+- **Get All Children**
+  ```bash
+  curl -X GET "http://localhost:8000/children"
+  ```
+
 - **Create a Child**
   ```bash
-  curl -X POST "http://localhost:8000/children" -H "Content-Type: application/json" -d '{"first_name": "John", "last_name": "Doe", "date_of_birth": "2020-01-01", "parent_email_address": "parent@example.com", "parent_phone_number": "+666666666"}'
+  curl -X POST "http://localhost:8000/children" -H "Content-Type: application/json" -d '{"first_name": "John", "last_name": "Doe", "date_of_birth": "2020-01-01", "parent_id": 1}'
   ```
 
 - **Get a Child by ID**
@@ -61,9 +96,14 @@ The API is organized into several layers:
 
 ### Caregivers
 
+- **Get All Caregivers**
+  ```bash
+  curl -X GET "http://localhost:8000/caregivers"
+  ```
+
 - **Create a Caregiver**
   ```bash
-  curl -X POST "http://localhost:8000/caregivers" -H "Content-Type: application/json" -d '{"first_name": "John", "last_name": "Doe", "qualifications": "Bachelor Degree in Early Childhood Education", "years_of_experience": 5, "caregiver_email_address": "caregiver@example.com", "caregiver_phone_number": "+666666666"}'
+  curl -X POST "http://localhost:8000/caregivers" -H "Content-Type: application/json" -d '{"first_name": "Jane", "last_name": "Doe", "qualifications": "Bachelor Degree in Early Childhood Education", "years_of_experience": 5, "caregiver_email_address": "jane.doe@example.com", "caregiver_phone_number": "+123456789"}'
   ```
 
 - **Get a Caregiver by ID**
@@ -73,9 +113,14 @@ The API is organized into several layers:
 
 ### Enrollments
 
+- **Get All Enrollments**
+  ```bash
+  curl -X GET "http://localhost:8000/enrollments"
+  ```
+
 - **Create an Enrollment**
   ```bash
-  curl -X POST "http://localhost:8000/enrollments" -H "Content-Type: application/json" -d '{"start_date": "2024-01-01", "end_date": "2024-01-05", "child_id": 1, "caregiver_id": 1, "creche_id": 1, "price": 100}'
+  curl -X POST "http://localhost:8000/enrollments" -H "Content-Type: application/json" -d '{"start_date": "2024-01-01", "end_date": "2024-01-05", "child_id": 1, "caregiver_id": 1, "creche_id": 1, "parent_id": 1, "price": 100}'
   ```
 
 - **Get an Enrollment by ID**
@@ -93,6 +138,22 @@ The API is organized into several layers:
   curl -X GET "http://localhost:8000/enrollments/creche/1/price/100"
   ```
 
+### Creches
+
+- **Get All Creches**
+  ```bash
+  curl -X GET "http://localhost:8000/creches"
+  ```
+
+- **Create a Creche**
+  ```bash
+  curl -X POST "http://localhost:8000/creches" -H "Content-Type: application/json" -d '{"name": "Creche A", "address": "123 Rue Exemple", "capacity": 30}'
+  ```
+
+- **Get a Creche by ID**
+  ```bash
+  curl -X GET "http://localhost:8000/creches/1"
+  ```
 ## Running the Application
 
 To run the FastAPI application, use the following command:

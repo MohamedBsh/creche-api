@@ -9,8 +9,20 @@ class DBChild(Base):
     first_name = Column(String, nullable=False)
     last_name = Column(String, nullable=False)
     date_of_birth = Column(Date, nullable=False)
-    parent_email_address = Column(String, nullable=False)
-    parent_phone_number = Column(String, nullable=False)
+
+    parent_id = Column(Integer, ForeignKey("parent.id"), nullable=False)
+    parent = relationship("DBParent")
+
+class DBParent(Base):
+    __tablename__ = "parent"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    first_name = Column(String, nullable=False)
+    last_name = Column(String, nullable=False)
+    email_address = Column(String, nullable=False)
+    phone_number = Column(String, nullable=False)
+
+    child_id = Column(Integer, ForeignKey("child.id"), nullable=False)
+    child = relationship("DBChild")
 
 class DBCaregiver(Base):
     __tablename__ = "caregiver"
@@ -43,3 +55,5 @@ class DBEnrollment(Base):
     caregiver = relationship("DBCaregiver")
     creche_id = Column(Integer, ForeignKey("creche.id"), nullable=False)
     creche = relationship("DBCreche")
+    parent_id = Column(Integer, ForeignKey("parent.id"), nullable=False)
+    parent = relationship("DBParent")
