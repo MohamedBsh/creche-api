@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Body
-from creche.db.operations.enrollment import read_all_enrollments, read_enrollment, create_enrollment, delete_enrollment, read_enrollments_by_creche_and_price
+from creche.db.operations.enrollments import read_all_enrollments, read_enrollment, create_enrollment, delete_enrollment, read_enrollments_by_creche_and_price
 from datetime import date
 router = APIRouter()
 
