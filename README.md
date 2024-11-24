@@ -113,5 +113,17 @@ You can access the interactive API documentation provided by FastAPI by navigati
 http://127.0.0.1:8000/docs
 ```
 
-This documentation allows you to test the endpoints directly from your browser.
-```
+## TODO
+
+- [ ] **Implement Authentication and Authorization**  
+  Add user authentication and authorization to secure the API endpoints.
+
+- [ ] **Add Unit Tests**  
+  Write unit tests for all API endpoints and database operations to ensure code reliability and facilitate future changes.
+
+- [ ] **Frontend Integration**  
+  Develop a frontend application that interacts with the API to provide a user-friendly interface for managing crèches, children, caregivers, and enrollments.
+
+- [ ] **Containerization**  
+  Consider containerizing the application using Docker for easier deployment and scalability.
+
