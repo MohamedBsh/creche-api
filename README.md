@@ -100,9 +100,6 @@ To run the FastAPI application, use the following command:
 ```bash
 uvicorn main:app --reload
 ```
-
-- `main` refers to the name of your main Python file (without the `.py` extension).
-- `app` is the FastAPI instance created in your `main.py` file.
 - The `--reload` option allows the server to automatically reload when you make changes to the code.
 
 ## Accessing the API Documentation
@@ -125,5 +122,5 @@ http://127.0.0.1:8000/docs
   Develop a frontend application that interacts with the API to provide a user-friendly interface for managing crèches, children, caregivers, and enrollments.
 
 - [ ] **Containerization**  
-  Consider containerizing the application using Docker for easier deployment and scalability.
+  Containerizing the application using Docker for easier deployment and scalability.
 
