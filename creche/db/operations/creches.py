@@ -1,9 +1,15 @@
 from creche.db.engine import DBSession
 from creche.db.models import DBCreche
+from pydantic import BaseModel
 
-def create_creche(name: str, address: str, capacity: int):
+class CrecheCreateData(BaseModel):
+    name: str
+    address: str
+    capacity: int
+
+def create_creche(creche_data: CrecheCreateData):
     session = DBSession()
-    new_creche = DBCreche(name=name, address=address, capacity=capacity)
+    new_creche = DBCreche(name=creche_data.name, address=creche_data.address, capacity=creche_data.capacity)
     session.add(new_creche)
     session.commit()
     session.refresh(new_creche)

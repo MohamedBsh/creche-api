@@ -1,9 +1,16 @@
 from creche.db.engine import DBSession
 from creche.db.models import DBParent, DBChild
+from pydantic import BaseModel
 
-def create_parent(first_name: str, last_name: str, email_address: str, phone_number: str):
+class ParentCreateData(BaseModel):
+    first_name: str
+    last_name: str
+    email_address: str
+    phone_number: str
+
+def create_parent(parent_data: ParentCreateData):
     session = DBSession()
-    new_parent = DBParent(first_name=first_name, last_name=last_name, email_address=email_address, phone_number=phone_number)
+    new_parent = DBParent(first_name=parent_data.first_name, last_name=parent_data.last_name, email_address=parent_data.email_address, phone_number=parent_data.phone_number)
     session.add(new_parent)
     session.commit()
     session.refresh(new_parent)
