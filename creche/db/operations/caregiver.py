@@ -1,6 +1,7 @@
 from creche.db.engine import DBSession
 from creche.db.models import DBCaregiver
 from pydantic import BaseModel
+
 class CaregiverCreateData(BaseModel):
     first_name: str
     last_name: str
