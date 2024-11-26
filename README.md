@@ -31,7 +31,7 @@ Make sure to install the following dependencies:
 You can install these dependencies using pip:
 
 ```bash
-pip install "fastapi[standard]" uvicorn sqlalchemy
+pip install "fastapi[standard]" uvicorn sqlalchemy pydantic
 ```
 
 ## Architecture
