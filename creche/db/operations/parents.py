@@ -10,10 +10,9 @@ class ParentCreateData(BaseModel):
 
 def create_parent(parent_data: ParentCreateData):
     session = DBSession()
-    new_parent = DBParent(first_name=parent_data.first_name, last_name=parent_data.last_name, email_address=parent_data.email_address, phone_number=parent_data.phone_number)
+    new_parent = DBParent(**parent_data.model_dump())
     session.add(new_parent)
     session.commit()
-    session.refresh(new_parent)
     return new_parent
 
 def read_all_parents():

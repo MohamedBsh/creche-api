@@ -25,10 +25,9 @@ def create_enrollment(enrollment_data: EnrollmentCreateData):
     if days <= 0:
         raise InvalidEnrollmentDates("Start date must be before end date")
     enrollment_price = creche.price * days
-    new_enrollment = DBEnrollment(start_date=enrollment_data.start_date, end_date=enrollment_data.end_date, price=enrollment_price, child=child, caregiver=caregiver, creche=creche)
+    new_enrollment = DBEnrollment(**enrollment_data.model_dump())
     session.add(new_enrollment)
     session.commit()
-    session.refresh(new_enrollment)
     return new_enrollment
 
 def delete_enrollment(id: int):

@@ -9,10 +9,9 @@ class CrecheCreateData(BaseModel):
 
 def create_creche(creche_data: CrecheCreateData):
     session = DBSession()
-    new_creche = DBCreche(name=creche_data.name, address=creche_data.address, capacity=creche_data.capacity)
+    new_creche = DBCreche(**creche_data.model_dump())
     session.add(new_creche)
     session.commit()
-    session.refresh(new_creche)
     return new_creche
 
 def read_all_creches():

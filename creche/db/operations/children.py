@@ -11,10 +11,9 @@ class ChildCreateData(BaseModel):
 
 def create_child(child_data: ChildCreateData):
     session = DBSession()
-    new_child = DBChild(first_name=child_data.first_name, last_name=child_data.last_name, date_of_birth=child_data.date_of_birth, parent_id=child_data.parent_id)
+    new_child = DBChild(**child_data.model_dump())
     session.add(new_child)
     session.commit()
-    session.refresh(new_child)
     return new_child
 
 def read_all_children():

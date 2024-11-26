@@ -11,10 +11,9 @@ class CaregiverCreateData(BaseModel):
 
 def create_caregiver(caregiver_data: CaregiverCreateData):
     session = DBSession()
-    new_caregiver = DBCaregiver(first_name=caregiver_data.first_name, last_name=caregiver_data.last_name, qualifications=caregiver_data.qualifications, years_of_experience=caregiver_data.years_of_experience, caregiver_email_address=caregiver_data.caregiver_email_address, caregiver_phone_number=caregiver_data.caregiver_phone_number)
+    new_caregiver = DBCaregiver(**caregiver_data.model_dump())
     session.add(new_caregiver)
     session.commit()
-    session.refresh(new_caregiver)
     return new_caregiver
 
 def read_all_caregivers():
