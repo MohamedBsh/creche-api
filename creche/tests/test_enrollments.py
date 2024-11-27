@@ -49,3 +49,19 @@ class TestEnrollments(unittest.TestCase):
         )
         enrollment = create_enrollment(enrollment_data, enrollment_interface, ChildInterface(), CaregiverInterface(), CrecheInterface())
         self.assertEqual(enrollment["price"], 100)
+
+    def test_date_error(self):
+        enrollment_interface = DBInterface(DBEnrollment)
+        enrollment_data = EnrollmentCreateData(
+            start_date=date.today(),
+            end_date=date.today(),
+            price=100,
+            child_id=1,
+            caregiver_id=1,
+            creche_id=1
+        )
+
+        self.assertRaises(ValueError, create_enrollment, enrollment_data, enrollment_interface, ChildInterface(), CaregiverInterface(), CrecheInterface())
+
+if __name__ == "__main__":
+    unittest.main()
