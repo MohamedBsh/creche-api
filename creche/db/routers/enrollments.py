@@ -1,6 +1,9 @@
-from fastapi import APIRouter, Body
+from fastapi import APIRouter
 from creche.db.operations.enrollments import read_all_enrollments, read_enrollment, create_enrollment, delete_enrollment, read_enrollments_by_creche_and_price, read_enrollments_by_parent
-from datetime import date
+from creche.db.operations.enrollments import EnrollmentCreateData
+from creche.db.df_interface import DBInterface
+from creche.db.models import DBEnrollment
+
 router = APIRouter()
 
 @router.get("/enrollments")
@@ -9,29 +12,28 @@ def api_read_all_enrollments():
 
 @router.post("/enrollments")
 def api_create_enrollment(
-    start_date: date = Body(...), 
-    end_date: date = Body(...),  
-    child_id: int = Body(...), 
-    caregiver_id: int = Body(...),
-    creche_id: int = Body(...),
-    parent_id: int = Body(...),
-    price: int = Body(...)
+    enrollment: EnrollmentCreateData
 
 ):  
-    return create_enrollment(start_date=start_date, end_date=end_date, child_id=child_id, caregiver_id=caregiver_id, creche_id=creche_id, parent_id=parent_id, price=price)
+    enrollment_interface = DBInterface(DBEnrollment)
+    return create_enrollment(enrollment, enrollment_interface)
 
 @router.get("/enrollments/{enrollment_id}")
 def api_read_enrollment(enrollment_id: int):
-    return read_enrollment(enrollment_id)
+    enrollment_interface = DBInterface(DBEnrollment)
+    return read_enrollment(enrollment_id, enrollment_interface)
 
 @router.delete("/enrollments/{enrollment_id}")
 def api_delete_enrollment(enrollment_id: int):
-    return delete_enrollment(enrollment_id)
+    enrollment_interface = DBInterface(DBEnrollment)
+    return delete_enrollment(enrollment_id, enrollment_interface)
 
 @router.get("/enrollments/creche/{creche_id}/price/{price}")
 def api_read_enrollments_by_creche_and_price(creche_id: int, price: int):
-    return read_enrollments_by_creche_and_price(creche_id, price)
+    enrollment_interface = DBInterface(DBEnrollment)
+    return read_enrollments_by_creche_and_price(creche_id, price, enrollment_interface)
 
 @router.get("/enrollments/parent/{parent_id}")
 def api_read_enrollments_by_parent(parent_id: int):
-    return read_enrollments_by_parent(parent_id)
+    enrollment_interface = DBInterface(DBEnrollment)
+    return read_enrollments_by_parent(parent_id, enrollment_interface)

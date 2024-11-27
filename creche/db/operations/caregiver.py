@@ -1,6 +1,6 @@
-from creche.db.engine import DBSession
-from creche.db.models import DBCaregiver
 from pydantic import BaseModel
+from creche.db.operations.interface import DataObject
+from creche.db.df_interface import DBInterface
 
 class CaregiverCreateData(BaseModel):
     first_name: str
@@ -10,19 +10,11 @@ class CaregiverCreateData(BaseModel):
     caregiver_email_address: str
     caregiver_phone_number: str
 
-def create_caregiver(caregiver_data: CaregiverCreateData):
-    session = DBSession()
-    new_caregiver = DBCaregiver(**caregiver_data.model_dump())
-    session.add(new_caregiver)
-    session.commit()
-    return new_caregiver
+def create_caregiver(caregiver_data: CaregiverCreateData, caregiver_interface: DBInterface) -> DataObject:
+    return caregiver_interface.create(caregiver_data.model_dump())
 
-def read_all_caregivers():
-    session = DBSession()
-    caregivers = session.query(DBCaregiver).all()
-    return caregivers
+def read_all_caregivers(caregiver_interface: DBInterface) -> list[DataObject]:
+    return caregiver_interface.read_all()
 
-def read_caregiver(id: int):
-    session = DBSession()
-    caregiver = session.query(DBCaregiver).get(id)
-    return caregiver
+def read_caregiver(id: int, caregiver_interface: DBInterface) -> DataObject:
+    return caregiver_interface.read_by_id(id)

@@ -1,7 +1,8 @@
-from creche.db.engine import DBSession
-from creche.db.models import DBEnrollment, DBChild, DBCaregiver, DBCreche, to_dict
+from creche.db.models import DBEnrollment
 from datetime import date
 from pydantic import BaseModel
+from creche.db.df_interface import DBInterface
+from creche.db.operations.interface import DataObject
 
 class EnrollmentCreateData(BaseModel):
     start_date: date
@@ -14,52 +15,40 @@ class EnrollmentCreateData(BaseModel):
 class InvalidEnrollmentDates(Exception):
     pass
 
-def create_enrollment(enrollment_data: EnrollmentCreateData):
-    session = DBSession()
-    ## retrieve child, caregiver, and creche from the database
-    child = session.query(DBChild).get(enrollment_data.child_id)
-    caregiver = session.query(DBCaregiver).get(enrollment_data.caregiver_id)
-    creche = session.query(DBCreche).get(enrollment_data.creche_id)
+def create_enrollment(enrollment_data: EnrollmentCreateData, 
+                    enrollment_interface: DBInterface, 
+                    child_interface: DBInterface, 
+                    caregiver_interface: DBInterface, 
+                    creche_interface: DBInterface
+    ) -> DataObject:
+
+    child = child_interface.read_by_id(enrollment_data.child_id)
+    caregiver = caregiver_interface.read_by_id(enrollment_data.caregiver_id)
+    creche = creche_interface.read_by_id(enrollment_data.creche_id)
     days = (enrollment_data.end_date - enrollment_data.start_date).days
     if days <= 0:
         raise InvalidEnrollmentDates("Start date must be before end date")
 
     enrollment_dict = enrollment_data.model_dump()
-    enrollment_price = creche.price * days
-    enrollment_dict["price"] = enrollment_price
+    enrollment_dict["price"] = creche.price * days
     enrollment_dict["child"] = child
     enrollment_dict["caregiver"] = caregiver
     enrollment_dict["creche"] = creche
 
-    new_enrollment = DBEnrollment(**enrollment_dict)
-    session.add(new_enrollment)
-    session.commit()
-    return enrollment_dict.model_dump()
+    return enrollment_interface.create(enrollment_dict)
 
 
-def delete_enrollment(id: int):
-    session = DBSession()
-    enrollment = session.query(DBEnrollment).get(id)
-    session.delete(enrollment)
-    session.commit()
-    return enrollment
+def delete_enrollment(id: int, enrollment_interface: DBInterface) -> DataObject:
+    return enrollment_interface.delete(id)
 
-def read_all_enrollments():
-    session = DBSession()
-    enrollments = list[DBEnrollment] = session.query(DBEnrollment).all()
-    return enrollments.model_dump()
+def read_all_enrollments(enrollment_interface: DBInterface) -> list[DataObject]:
+    return enrollment_interface.read_all()
 
-def read_enrollment(id: int):
-    session = DBSession()
-    enrollment = session.query(DBEnrollment).get(id)
-    return enrollment.model_dump()
+def read_enrollment(id: int, enrollment_interface: DBInterface) -> DataObject:
+    return enrollment_interface.read_by_id(id)
 
-def read_enrollments_by_creche_and_price(creche_id: int, price: int):
-    session = DBSession()
-    enrollments = session.query(DBEnrollment).filter(DBEnrollment.creche_id == creche_id, DBEnrollment.price == price).all()
-    return enrollments.model_dump()
+def read_enrollments_by_creche_and_price(creche_id: int, price: int, enrollment_interface: DBInterface) -> list[DataObject]:
+    return enrollment_interface.read_all(DBEnrollment.creche_id == creche_id, DBEnrollment.price == price)
 
-def read_enrollments_by_parent(parent_id: int):
-    session = DBSession()
-    enrollments = session.query(DBEnrollment).filter(DBEnrollment.parent_id == parent_id).all()
-    return enrollments.model_dump()
+def read_enrollments_by_parent(parent_id: int, enrollment_interface: DBInterface) -> list[DataObject]:
+    return enrollment_interface.read_all(DBEnrollment.parent_id == parent_id)

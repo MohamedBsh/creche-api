@@ -11,7 +11,7 @@ class DBChild(Base):
     date_of_birth = Column(Date, nullable=False)
 
     parent_id = Column(Integer, ForeignKey("parent.id"), nullable=False)
-    parent = relationship("DBParent")
+    parent = relationship("DBParent", back_populates="children")
 
 class DBParent(Base):
     __tablename__ = "parent"
@@ -21,8 +21,7 @@ class DBParent(Base):
     email_address = Column(String, nullable=False)
     phone_number = Column(String, nullable=False)
 
-    child_id = Column(Integer, ForeignKey("child.id"), nullable=False)
-    child = relationship("DBChild")
+    children = relationship("DBChild", back_populates="parent")
 
 class DBCaregiver(Base):
     __tablename__ = "caregiver"

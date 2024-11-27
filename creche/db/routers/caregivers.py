@@ -1,22 +1,23 @@
-from fastapi import APIRouter, Body
+from fastapi import APIRouter
 from creche.db.operations.caregiver import read_all_caregivers, read_caregiver, create_caregiver
 router = APIRouter()
+from creche.db.df_interface import DBInterface
+from creche.db.models import DBCaregiver
+from creche.db.operations.caregiver import CaregiverCreateData
 
 @router.get("/caregivers")
 def api_read_all_caregivers():
-    return read_all_caregivers()
+    caregiver_interface = DBInterface(DBCaregiver)
+    return read_all_caregivers(caregiver_interface)
 
 @router.post("/caregivers")
 def api_create_caregiver(
-    first_name: str = Body(...), 
-    last_name: str = Body(...), 
-    qualifications: str = Body(...), 
-    years_of_experience: int = Body(...), 
-    caregiver_email_address: str = Body(...), 
-    caregiver_phone_number: str = Body(...)
+    caregiver: CaregiverCreateData
 ):
-    return create_caregiver(first_name=first_name, last_name=last_name, qualifications=qualifications, years_of_experience=years_of_experience, caregiver_email_address=caregiver_email_address, caregiver_phone_number=caregiver_phone_number)
+    caregiver_interface = DBInterface(DBCaregiver)
+    return create_caregiver(caregiver, caregiver_interface)
 
 @router.get("/caregivers/{caregiver_id}")
 def api_read_caregiver(caregiver_id: int):
-    return read_caregiver(caregiver_id)
+    caregiver_interface = DBInterface(DBCaregiver)
+    return read_caregiver(caregiver_id, caregiver_interface)

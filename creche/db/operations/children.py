@@ -1,7 +1,7 @@
-from creche.db.engine import DBSession
-from creche.db.models import DBChild
 from datetime import date
 from pydantic import BaseModel
+from creche.db.operations.interface import DataObject
+from creche.db.df_interface import DBInterface
 
 class ChildCreateData(BaseModel):
     first_name: str
@@ -9,19 +9,11 @@ class ChildCreateData(BaseModel):
     date_of_birth: date
     parent_id: int
 
-def create_child(child_data: ChildCreateData):
-    session = DBSession()
-    new_child = DBChild(**child_data.model_dump())
-    session.add(new_child)
-    session.commit()
-    return new_child
+def create_child(child_data: ChildCreateData, child_interface: DBInterface) -> DataObject:
+    return child_interface.create(child_data.model_dump())
 
-def read_all_children():
-    session = DBSession()
-    children = session.query(DBChild).all()
-    return children
+def read_all_children(child_interface: DBInterface) -> list[DataObject]:
+    return child_interface.read_all()
 
-def read_child(id: int):
-    session = DBSession()
-    child = session.query(DBChild).get(id)
-    return child
+def read_child(id: int, child_interface: DBInterface) -> DataObject:
+    return child_interface.read_by_id(id)
