@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from creche.db.operations.interface import DataObject
-from creche.db.df_interface import DBInterface
+from creche.db.db_interface import DBInterface
 
 class CaregiverCreateData(BaseModel):
     first_name: str

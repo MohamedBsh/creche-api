@@ -1,7 +1,7 @@
 from datetime import date
 from pydantic import BaseModel
 from creche.db.operations.interface import DataObject
-from creche.db.df_interface import DBInterface
+from creche.db.db_interface import DBInterface
 
 class ChildCreateData(BaseModel):
     first_name: str

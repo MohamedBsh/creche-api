@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from creche.db.operations.enrollments import read_all_enrollments, read_enrollment, create_enrollment, delete_enrollment, read_enrollments_by_creche_and_price, read_enrollments_by_parent
 from creche.db.operations.enrollments import EnrollmentCreateData
-from creche.db.df_interface import DBInterface
+from creche.db.db_interface import DBInterface
 from creche.db.models import DBEnrollment
 
 router = APIRouter()

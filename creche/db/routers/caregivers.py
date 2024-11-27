@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from creche.db.operations.caregiver import read_all_caregivers, read_caregiver, create_caregiver
-from creche.db.df_interface import DBInterface
+from creche.db.db_interface import DBInterface
 from creche.db.models import DBCaregiver
 from creche.db.operations.caregiver import CaregiverCreateData
 

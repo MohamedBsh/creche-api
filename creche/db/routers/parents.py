@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from creche.db.operations.parents import read_all_parents, read_parent, create_parent, delete_parent, update_parent, add_child_to_parent, remove_child_from_parent, get_children_of_parent
 from creche.db.operations.parents import ParentCreateData
-from creche.db.df_interface import DBInterface
+from creche.db.db_interface import DBInterface
 from creche.db.models import DBParent
 
 router = APIRouter()

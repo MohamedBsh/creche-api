@@ -1,7 +1,7 @@
 from creche.db.models import DBEnrollment
 from datetime import date
 from pydantic import BaseModel
-from creche.db.df_interface import DBInterface
+from creche.db.db_interface import DBInterface
 from creche.db.operations.interface import DataObject
 
 class EnrollmentCreateData(BaseModel):
