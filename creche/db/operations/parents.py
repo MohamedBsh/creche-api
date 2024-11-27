@@ -20,8 +20,8 @@ def read_parent(id: int, parent_interface: DBInterface) -> DataObject:
 def delete_parent(id: int, parent_interface: DBInterface) -> DataObject:
     return parent_interface.delete(id)
 
-def update_parent(id: int, first_name: str, last_name: str, email_address: str, phone_number: str, parent_interface: DBInterface) -> DataObject:
-    return parent_interface.update(id, {"first_name": first_name, "last_name": last_name, "email_address": email_address, "phone_number": phone_number})
+def update_parent(id: int, parent_data: ParentCreateData, parent_interface: DBInterface) -> DataObject:
+    return parent_interface.update(id, parent_data.model_dump())
 
 def add_child_to_parent(parent_id: int, child_interface: DBInterface, child_data: ChildCreateData, parent_interface: DBInterface) -> DataObject:
     parent = parent_interface.read_by_id(parent_id)  
