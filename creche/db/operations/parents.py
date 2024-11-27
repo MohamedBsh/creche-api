@@ -2,6 +2,7 @@ from creche.db.operations.interface import DataObject
 from creche.db.db_interface import DBInterface
 from pydantic import BaseModel
 from creche.db.operations.children import ChildCreateData
+
 class ParentCreateData(BaseModel):
     first_name: str
     last_name: str
