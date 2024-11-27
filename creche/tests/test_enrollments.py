@@ -3,7 +3,7 @@ from creche.db.operations.enrollments import EnrollmentCreateData
 from creche.db.df_interface import DBInterface
 from creche.db.models import DBEnrollment
 from datetime import date, timedelta
-from creche.db.models import DataObject
+from creche.db.operations.interface import DataObject
 from creche.db.operations.enrollments import create_enrollment
 
 class DataInterfaceStub:
@@ -41,7 +41,11 @@ class TestEnrollments(unittest.TestCase):
         enrollment_interface = DBInterface(DBEnrollment)
         enrollment_data = EnrollmentCreateData(
             start_date=date.today(),
-            end_date=date.today() + timedelta(days=1)
+            end_date=date.today() + timedelta(days=1),
+            price=100,  # Ajoutez le prix ici
+            child_id=1,  # Remplacez par un ID d'enfant valide
+            caregiver_id=1,  # Remplacez par un ID de soignant valide
+            creche_id=1  # Remplacez par un ID de crèche valide
         )
         enrollment = create_enrollment(enrollment_data, enrollment_interface, ChildInterface(), CaregiverInterface(), CrecheInterface())
         self.assertEqual(enrollment["price"], 100)

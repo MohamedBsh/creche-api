@@ -30,7 +30,7 @@ def create_enrollment(enrollment_data: EnrollmentCreateData,
         raise InvalidEnrollmentDates("Start date must be before end date")
 
     enrollment_dict = enrollment_data.model_dump()
-    enrollment_dict["price"] = creche.price * days
+    enrollment_dict["price"] = creche["price"] * days
     enrollment_dict["child"] = child
     enrollment_dict["caregiver"] = caregiver
     enrollment_dict["creche"] = creche
