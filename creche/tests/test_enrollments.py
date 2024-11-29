@@ -4,7 +4,7 @@ from creche.db.db_interface import DBInterface
 from creche.db.models import DBEnrollment
 from datetime import date, timedelta
 from creche.db.operations.interface import DataObject
-from creche.db.operations.enrollments import create_enrollment
+from creche.db.operations.enrollments import create_enrollment, InvalidEnrollmentDates
 
 class DataInterfaceStub:
     def read_by_id(self, id: int) -> DataObject:
@@ -35,19 +35,24 @@ class EnrollmentInterface(DataInterfaceStub):
         enrollment = dict(data)
         enrollment["id"] = 1
         return enrollment
+    
+class ParentInterface(DataInterfaceStub):
+    def read_by_id(self, id: int) -> DataObject:
+        return {"id": id, "first_name": "John", "last_name": "Doe", "email_address": "john.doe@example.com", "phone_number": "123-456-7890"}
 
 class TestEnrollments(unittest.TestCase):
     def test_price_one_day(self):
-        enrollment_interface = DBInterface(DBEnrollment)
+        enrollment_interface = DBInterface(DBEnrollment)    
         enrollment_data = EnrollmentCreateData(
             start_date=date.today(),
             end_date=date.today() + timedelta(days=1),
             price=100,
             child_id=1,
             caregiver_id=1,
-            creche_id=1
+            creche_id=1,
+            parent_id=1
         )
-        enrollment = create_enrollment(enrollment_data, enrollment_interface, ChildInterface(), CaregiverInterface(), CrecheInterface())
+        enrollment = create_enrollment(enrollment_data, enrollment_interface, ChildInterface(), CaregiverInterface(), CrecheInterface(), ParentInterface())
         self.assertEqual(enrollment["price"], 100)
 
     def test_date_error(self):
@@ -58,10 +63,12 @@ class TestEnrollments(unittest.TestCase):
             price=100,
             child_id=1,
             caregiver_id=1,
-            creche_id=1
+            creche_id=1,
+            parent_id=1
         )
 
-        self.assertRaises(ValueError, create_enrollment, enrollment_data, enrollment_interface, ChildInterface(), CaregiverInterface(), CrecheInterface())
+        with self.assertRaises(InvalidEnrollmentDates):
+            create_enrollment(enrollment_data, enrollment_interface, ChildInterface(), CaregiverInterface(), CrecheInterface(), ParentInterface())
 
 if __name__ == "__main__":
     unittest.main()

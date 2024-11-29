@@ -11,6 +11,7 @@ class EnrollmentCreateData(BaseModel):
     child_id: int
     caregiver_id: int
     creche_id: int
+    parent_id: int
 
 class InvalidEnrollmentDates(Exception):
     pass
@@ -19,24 +20,29 @@ def create_enrollment(enrollment_data: EnrollmentCreateData,
                     enrollment_interface: DBInterface, 
                     child_interface: DBInterface, 
                     caregiver_interface: DBInterface, 
-                    creche_interface: DBInterface
+                    creche_interface: DBInterface,
+                    parent_interface: DBInterface
     ) -> DataObject:
 
+    creche = creche_interface.read_by_id(enrollment_data.creche_id)
     child = child_interface.read_by_id(enrollment_data.child_id)
     caregiver = caregiver_interface.read_by_id(enrollment_data.caregiver_id)
-    creche = creche_interface.read_by_id(enrollment_data.creche_id)
+    parent = parent_interface.read_by_id(enrollment_data.parent_id)
     days = (enrollment_data.end_date - enrollment_data.start_date).days
     if days <= 0:
         raise InvalidEnrollmentDates("Start date must be before end date")
 
-    enrollment_dict = enrollment_data.model_dump()
-    enrollment_dict["price"] = creche["price"] * days
-    enrollment_dict["child"] = child
-    enrollment_dict["caregiver"] = caregiver
-    enrollment_dict["creche"] = creche
+    enrollment_dict = {
+        "start_date": enrollment_data.start_date,
+        "end_date": enrollment_data.end_date,
+        "price": creche["price"] * days,
+        "child_id": child["id"],
+        "caregiver_id": caregiver["id"],
+        "creche_id": creche["id"],
+        "parent_id": parent["id"]
+    }
 
     return enrollment_interface.create(enrollment_dict)
-
 
 def delete_enrollment(id: int, enrollment_interface: DBInterface) -> DataObject:
     return enrollment_interface.delete(id)
