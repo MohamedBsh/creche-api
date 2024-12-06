@@ -2,7 +2,6 @@
 
 ## Table of Contents
 - [Introduction](#introduction)
-- [Dependencies](#dependencies)
 - [Architecture](#architecture)
 - [API Endpoints](#api-endpoints)
   - [Parents](#parents)
@@ -11,6 +10,7 @@
   - [Enrollments](#enrollments)
   - [Creches](#creches)
 - [Running the Application](#running-the-application)
+  - [Using Docker](#using-docker)
 - [Accessing the API Documentation](#accessing-the-api-documentation)
 - [TODO](#todo)
 
@@ -19,20 +19,6 @@
 This project is a REST API for managing operations related to creches, children, caregivers, and enrollments. The API allows for creating, reading, updating, and deleting records in a database.
 
 ![creche-api](images/api.png)
-
-## Dependencies
-
-Make sure to install the following dependencies:
-
-- FastAPI
-- Uvicorn
-- SQLAlchemy
-
-You can install these dependencies using pip:
-
-```bash
-pip install "fastapi[standard]" uvicorn sqlalchemy pydantic
-```
 
 ## Architecture
 
@@ -168,21 +154,45 @@ The API is organized into several layers:
   ```bash
   curl -X GET "http://localhost:8000/creches/1"
   ```
+
 ## Running the Application
 
-To run the FastAPI application, use the following command:
+### Using Docker
+
+To run the FastAPI application using Docker, follow these steps:
+
+1. **Build the Docker image:**
+   ```bash
+   docker build -t creche-api .
+   ```
+
+2. **Run the Docker container:**
+   ```bash
+   docker run -d --name creche-api -p 8000:8000 creche-api
+   ```
+
+3. **Access the application:**
+   You can access the FastAPI application at the following URL:
+   ```bash
+   http://localhost:8000
+   ```
+
+### Running Locally (Without Docker)
+
+If you prefer to run the application locally without Docker, use the following command:
 
 ```bash
 uvicorn main:app --reload
 ```
+
 - The `--reload` option allows the server to automatically reload when you make changes to the code.
 
 ## Accessing the API Documentation
 
 You can access the interactive API documentation provided by FastAPI by navigating to the following URL in your web browser:
 
-```
-http://127.0.0.1:8000/docs
+```bash
+http://localhost:8000/docs
 ```
 
 ## TODO
@@ -194,8 +204,8 @@ http://127.0.0.1:8000/docs
   Write unit tests for all API endpoints and database operations to ensure code reliability and facilitate future changes.
 
 - [ ] **Frontend Integration**  
-  Develop a frontend application that interacts with the API to provide a user-friendly interface for managing crèches, children, caregivers, and enrollments.
+  Develop a frontend application that interacts with the API to provide a user-friendly interface for managing crèches, children, caregivers, enrollments and parents.
+  Deploy my docker image to a cloud service provider.
 
-- [ ] **Containerization**  
+- [X] **Containerization**  
   Containerizing the application using Docker for easier deployment and scalability.
-
