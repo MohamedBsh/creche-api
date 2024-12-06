@@ -1,7 +1,9 @@
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, Date, ForeignKey
 from sqlalchemy.orm import relationship
+
 Base = declarative_base()
+
 
 class DBChild(Base):
     __tablename__ = "child"
@@ -13,6 +15,7 @@ class DBChild(Base):
     parent_id = Column(Integer, ForeignKey("parent.id"), nullable=False)
     parent = relationship("DBParent", back_populates="children")
 
+
 class DBParent(Base):
     __tablename__ = "parent"
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -22,6 +25,7 @@ class DBParent(Base):
     phone_number = Column(String, nullable=False)
 
     children = relationship("DBChild", back_populates="parent")
+
 
 class DBCaregiver(Base):
     __tablename__ = "caregiver"
@@ -33,6 +37,7 @@ class DBCaregiver(Base):
     caregiver_email_address = Column(String, nullable=False)
     caregiver_phone_number = Column(String, nullable=False)
 
+
 class DBCreche(Base):
     __tablename__ = "creche"
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -40,6 +45,7 @@ class DBCreche(Base):
     address = Column(String, nullable=False)
     capacity = Column(Integer, nullable=False)
     price = Column(Integer, nullable=False)
+
 
 class DBEnrollment(Base):
     __tablename__ = "enrollment"

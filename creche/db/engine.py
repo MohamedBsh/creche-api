@@ -6,6 +6,7 @@ from creche.db.models import Base
 engine: Engine = None
 DBSession = sessionmaker()
 
+
 def init_db(file: str):
     global engine
     engine = create_engine(file)

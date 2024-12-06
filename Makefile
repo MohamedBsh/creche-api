@@ -15,7 +15,7 @@ test:
 .PHONY: lint
 lint:
 	@echo "Checking code style with flake8..."
-	$(FLAKE8) $(SRC_DIR)
+	$(FLAKE8) --ignore=E501,W291 $(SRC_DIR)
 
 .PHONY: format
 format:

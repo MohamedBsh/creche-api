@@ -6,17 +6,20 @@ from creche.db.models import DBChild
 
 router = APIRouter()
 
+
 @router.get("/children")
 def api_read_all_children():
     child_interface = DBInterface(DBChild)
     return read_all_children(child_interface)
 
+
 @router.post("/children")
-def api_create_child(
-    child: ChildCreateData
-):
+def api_create_child(child: ChildCreateData):
     child_interface = DBInterface(DBChild)
-    return create_child(child, child_interface)
+    return create_child(
+        child, 
+        child_interface
+    )
 
 @router.get("/children/{child_id}")
 def api_read_child(child_id: int):
